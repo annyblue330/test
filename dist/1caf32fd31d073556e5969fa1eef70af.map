@@ -1,1 +1,0 @@
-{"version":3,"sources":["js/index.js"],"names":["console","log"],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;AAEAA,QAAQC,GAAR,CAAY,aAAZ","file":"1caf32fd31d073556e5969fa1eef70af.map","sourcesContent":["import './sass.sass';\n\nconsole.log(\"hello world\");"]}
