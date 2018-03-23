@@ -1,0 +1,8 @@
+body {
+  background-color: #dedede; }
+
+h1 {
+  font-size: 55px;
+  display: flex;
+  color: blue;
+  border-radius: 5px; }

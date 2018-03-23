@@ -1,0 +1,212 @@
+//common useful mixin ==================================================
+//使用px來轉換為rem的數值-------------------------
+@function rem($size) 
+	$remSize: $size / 16px
+	@return $remSize * 1rem
+
+//提示瀏覽器此元素可能有 CSS 的改變 attention: 若使用過多，瀏覽器會嘗試優化所有元素而消耗過多的機器資源
+@mixin willchange($style)
+	will-change: $style
+
+//隐藏被旋转的 div 元素的背面 若動畫有翻轉此屬性可隱藏該元素背面
+@mixin hideback
+	backface-visibility: hidden
+	-webkit-backface-visibility: hidden	
+	-moz-backface-visibility: hidden 	
+	-ms-backface-visibility: hidden 
+//cross browser ========================================================
+@mixin opacity($opacity) 
+	opacity: $opacity
+	$opacity-ie: $opacity * 100
+	filter: alpha(opacity=$opacity-ie) //for IE8
+
+// font setting=========================================================
+//font-size自動依照px設定為相對rem---------------------------
+@mixin font-size($size) 
+	font-size: $size
+	font-size: calculateRem($size)
+
+//最大行數 字級lineheught 最大寬度----------------------------
+//linewidth有預設值
+@mixin textrow($maxRow,$lineheight,$linewidth:initial)
+	display: block
+	//此行在ie會失效 在前面加上display: block
+	display: -webkit-box
+	//強制斷行
+	word-break: break-word
+	//限制顯示行數
+	text-overflow: ellipsis
+	-webkit-line-clamp: $maxRow
+	-webkit-box-orient: vertical
+	overflow: hidden
+	max-height: ($lineheight*$maxRow)
+	//防止ie浮出字
+	max-width: $linewidth
+
+@mixin fontstyle($size: false, $colour: false, $weight: false,  $lh: false) 
+	// font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif
+	@if $size  
+		font-size: $size
+	@if $colour  
+		color: $colour
+	@if $weight  
+		font-weight: $weight
+	@if $lh  
+		line-height: $lh
+
+@mixin text-hide
+	white-space: nowrap
+	text-indent: 100%
+	overflow: hidden
+
+$all-font: 'h1, h2, h3, h4, h5, h6'
+@mixin fontStyle($style1,$style-def)
+	font-family: $style1, $style-def
+//position setting============================================================
+//pseudo element-------------------------
+@mixin pseudo($display: block, $pos: absolute, $content: '')
+	content: $content
+	display: $display
+	position: $pos
+
+//垂直置中---------------------------
+@mixin flexcenter
+	display: flex
+	align-content: center
+	justify-content: center
+@mixin flexcenter_n
+	display: flex
+	align-items: center
+	justify-content: center
+//水平區分---------------------------
+@mixin rowspace
+	display: flex
+	flex-direction: row
+	justify-content: space-between
+
+@mixin rowspace_multi
+	display: flex
+	flex-direction: row
+	justify-content: space-between
+	flex-wrap: wrap
+
+@mixin rowflow
+	display: flex
+	flex-direction: row
+	flex-flow: row wrap
+
+//background and image ======================================================
+//image-width 是compass會算出圖片的寬度 並用base64編碼
+@mixin bg-img-wh($bgname, $filetype)
+	background-images: url("../images/#{$bgname}.#{$filetype}")
+	width: image-width("../images/#{$bgname}.#{$filetype}")
+	height: image-height("../images/#{$bgname}.#{$filetype}")
+
+@mixin img-wh($bgname, $filetype)
+	width: image-width("../images/#{$bgname}.#{$filetype}")
+	height: image-height("../images/#{$bgname}.#{$filetype}")
+@mixin img-h($bgname, $filetype)
+	height: image-height("../images/#{$bgname}.#{$filetype}")
+@mixin img-w($bgname, $filetype)
+	width: image-width("../images/#{$bgname}.#{$filetype}")
+@mixin bg-img($bgname, $filetype)
+	background-images: url("../images/#{$bgname}.#{$filetype}")
+//mobile
+@mixin bg-img-wh-m($bgname, $filetype)
+	background: url("../images-m/#{$bgname}.#{$filetype}")
+	width: image-width("../images-m/#{$bgname}.#{$filetype}")
+	height: image-height("../images-m/#{$bgname}.#{$filetype}")
+
+@mixin img-wh-m($bgname, $filetype)
+	width: image-width("../images-m/#{$bgname}.#{$filetype}")
+	height: image-height("../images-m/#{$bgname}.#{$filetype}")
+@mixin img-h-m($bgname, $filetype)
+	height: image-height("../images-m/#{$bgname}.#{$filetype}")
+@mixin img-w-m($bgname, $filetype)
+	width: image-width("../images-m/#{$bgname}.#{$filetype}")
+@mixin bg-img-m($bgname, $filetype)
+	background: url("../images-m/#{$bgname}.#{$filetype}")
+// //背景垂直致中
+@mixin bgcenter
+	background-repeat: no-repeat
+	background-position: 50% 50%
+	background-size: 100%
+
+@mixin bgcentercover
+	background-repeat: no-repeat
+	background-position: 50% 50%
+	background-size: cover
+//rwd======================================================================
+//小於ＸＸ則套用
+@mixin rwd($w)
+	@media only screen and (max-width: $w) 
+		@content
+
+//大於多少則套用
+@mixin rwd_big($w)
+	@media only screen and (min-width: $w) 
+		@content
+//svg variables==========================================================
+$icomoon-font-path: "../fonts" !default
+$icon-social-github: "\e900"
+$icon-social-google: "\e901"
+$icon-social-instagram: "\e902"
+$icon-social-fb: "\e903"
+$icon-mail: "\ea83"
+$icon-rss2: "\ea9c"
+$icon-blogger2: "\eab8"
+$icon-tumblr2: "\eaba"
+
+//grid style==============================================================
+$width: 180px //menu width
+@mixin grid($cloum_number,$cloum_gutter)
+	//總寬度 -    欄位間距  *    (欄位數量-1)      /   欄位數量
+	width: ($width - $cloum_gutter*($cloum_number - 1) ) / $cloum_number
+	margin-right: $cloum_gutter
+	-webkit-box-sizing: border-box
+	-moz-box-sizing: border-box
+	box-sizing: border-box
+	//   欄位數量
+	&:nth-child(#{$cloum_number}n)
+		margin-right: 0
+
+//形狀====================================================================
+//三角形
+@mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false)
+	@include pseudo($pos: $position)
+		width: 0
+		height: 0
+	@if $round 
+		border-radius: 3px
+
+	@if $direction == down 
+		border-left: $size solid transparent
+		border-right: $size solid transparent
+		border-top: $size solid $color
+		margin-top: 0 - round( $size / 2.5 )
+	@else if $direction == up 
+		border-left: $size solid transparent
+		border-right: $size solid transparent
+		border-bottom: $size solid $color
+		margin-bottom: 0 - round( $size / 2.5 )
+	@else if $direction == right 
+		border-top: $size solid transparent
+		border-bottom: $size solid transparent
+		border-left: $size solid $color
+		margin-right: -$size
+	@else if  $direction == left 
+		border-top: $size solid transparent
+		border-bottom: $size solid transparent
+		border-right: $size solid $color
+		margin-left: -$size
+
+//common 
+@mixin change($style:all,$animation:linear,$time:0.2s)
+	transition: $style $time $animation
+
+
+//for loop example---
+@mixin for
+	@for $i from 0 through 6
+		.dec-item#{$i}
+			background-image: url("../game/decoration0#{$i}.png")
